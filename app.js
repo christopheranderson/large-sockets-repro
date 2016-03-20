@@ -9,6 +9,7 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+app.io = require('socket.io')();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -56,5 +57,11 @@ app.use(function(err, req, res, next) {
   });
 });
 
+
+app.io.on('connection', function(socket) {
+   setInterval(function() {
+       socket.emit('servermessage', Math.floor((Math.random() * 100000)));
+   }, 1000); 
+});
 
 module.exports = app;
